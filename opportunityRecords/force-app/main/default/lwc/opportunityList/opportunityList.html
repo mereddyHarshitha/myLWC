@@ -1,0 +1,57 @@
+<template>
+    <lightning-card title="Opportunity List" icon-name="standard:opportunity">
+            <lightning-button label="New" variant="brand" slot="actions" onclick={openmodal}></lightning-button>
+            <template if:true={openmodel}>
+                    <div class="demo-only" style="height: 640px;">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container">
+                                    <header class="slds-modal__header">
+                                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Opportunity</h2>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                    <lightning-record-form
+                                        object-api-name="Opportunity"
+                                        fields={fields}
+                                        onsuccess={handleSuccess}
+                                        oncancel={handleCancel}
+                                        >
+                                    </lightning-record-form>
+                                </div>
+                                </div>
+                            </section>
+                    </div>
+                </template>
+            <lightning-layout multiple-rows="true" vertical-align="end">
+            <lightning-layout-item size="12" small-device-size="10" medium-device-size="8" large-device-size="6" padding="around-small">
+                    <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                    <lightning-input type="text" 
+                                                     label="Search by Account/Opportunity Name" 
+                                                     onchange={handleName} ></lightning-input>
+                            </div>
+                        </div> 
+            </lightning-layout-item>
+            </lightning-layout><br/>
+            
+            <template if:true={finaldata}>
+       <lightning-datatable data={finaldata} 
+                                 columns={columns} 
+                                 key-field="Id"
+                                 hide-checkbox-column="true"
+                                 sorted-by={sortBy} 
+                                 sorted-direction={sortDirection} 
+                                 onsort={updateColumnSorting}
+                                 onsave={handleSave}
+                                 draft-values={draftValues}></lightning-datatable>
+
+            </template>
+
+            <div class="slds-m-around_medium">
+                  <p class="slds-m-vertical_medium content">
+                    Displaying {startingRecord} to {endingRecord} of {totalRecountCount} records.
+                                             Page {page} of {totalPage}. </p>
+                  <c-pagination-comp onprevious={previousHandler} onnext={nextHandler}></c-pagination-comp>
+            </div>
+    </lightning-card>
+    
+</template>
